@@ -1,5 +1,9 @@
 from .exceptions import DistanceOutOfBoundsError
 
+C_K1 = 0.0654
+C_K2 = 0.00258
+C_A = 85
+C_B = 950
 
 PORTUGESE_TABLE = (
     (40, 11),
@@ -86,10 +90,7 @@ def _fraction_on_turns(distance):
     return turn_distance / distance
 
 
-def purdy(distance, time, digits=2):
-    """
-    Returns Purdy Points based on Portugese Tables
-    """
+def _interpolate(distance):
     c1 = 0.2
     c2 = 0.08
     c3 = 0.0065
@@ -118,8 +119,30 @@ def purdy(distance, time, digits=2):
         + c3 * _fraction_on_turns(distance) * pow(velocity_interpolated, 2)
     )
 
-    k = 0.0654 - 0.00258 * velocity_interpolated
-    a = 85 / k
-    b = 1 - 950 / a
+    return velocity_interpolated, time_950
+
+
+def purdy(distance, time, digits=2):
+    """
+    Returns Purdy Points based on Portugese Tables
+    """
+
+    velocity_interpolated, time_950 = _interpolate(distance)
+
+    k = C_K1 - C_K2 * velocity_interpolated
+    a = C_A / k
+    b = 1 - C_B / a
     points = a * (time_950 / time - b)
-    return round(points, digits)
+    return points if digits is None else round(points, digits)
+
+
+def purdy_prediction(distance, time, distance_to_predict):
+    points = purdy(distance, time, digits=None)
+
+    velocity_interpolated, time_950 = _interpolate(distance_to_predict)
+    k = C_K1 - C_K2 * velocity_interpolated
+    a = C_A / k
+    b = 1 - C_B / a
+
+    time_to_predict = time_950 / (points / a + b)
+    return int(round(time_to_predict))

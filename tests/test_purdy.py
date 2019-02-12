@@ -1,5 +1,6 @@
+import math
 import pytest
-from running_performance import DistanceOutOfBoundsError, purdy
+from running_performance import DistanceOutOfBoundsError, purdy, purdy_prediction
 from running_performance.purdy import PORTUGESE_TABLE, _fraction_on_turns
 
 
@@ -43,3 +44,9 @@ def test_purdy_points_distance_too_long():
     high_distance, _ = PORTUGESE_TABLE[-1]
     with pytest.raises(DistanceOutOfBoundsError):
         purdy(high_distance + 1, 60)
+
+
+def test_purdy_time(purdy_time):
+    prediction = purdy_prediction(purdy_time['distance'], purdy_time['time'], purdy_time['predicted_distance'])
+    difference = prediction - purdy_time['predicted_time']
+    assert math.fabs(difference) / purdy_time['predicted_time'] < 0.005
