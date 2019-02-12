@@ -1,0 +1,2 @@
+class DistanceOutOfBoundsError(RuntimeError):
+    pass
