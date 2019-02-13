@@ -14,6 +14,11 @@ PERFORMANCES = [
             (10000, 51 * 60 + 18),
             (21100, 1 * 60**2 + 55 * 60 + 7),
         ),
+        'VO2Max_times': (
+            (5000, 24 * 60 + 14),
+            (10000, 50 * 60 + 17),
+            (21100, 1 * 60**2 + 51 * 60 + 30),
+        ),
     },
     {
         'distance': 10000,
@@ -24,6 +29,11 @@ PERFORMANCES = [
             (5000, 24 * 60 + 43),
             (10000, 52 * 60 + 18),
             (21100, 1 * 60**2 + 57 * 60 + 34),
+        ),
+        'VO2Max_times': (
+            (5000, 25 * 60 + 14),
+            (10000, 52 * 60 + 22),
+            (21100, 1 * 60**2 + 56 * 60 + 7),
         ),
     },
     {
@@ -36,6 +46,11 @@ PERFORMANCES = [
             (10000, 53 * 60 + 41),
             (21100, 2 * 60**2 + 37),
         ),
+        'VO2Max_times': (
+            (5000, 26 * 60 + 12),
+            (10000, 54 * 60 + 24),
+            (21100, 2 * 60**2 + 37),
+        ),
     },
     {
         'distance': 2010,
@@ -46,6 +61,11 @@ PERFORMANCES = [
             (5000, 27 * 60 + 11),
             (10000, 57 * 60 + 43),
             (21100, 2 * 60**2 + 9 * 60 + 55),
+        ),
+        'VO2Max_times': (
+            (5000, 25 * 60 + 57),
+            (10000, 53 * 60 + 54),
+            (21100, 1 * 60**2 + 59 * 60 + 30),
         ),
     },
 ]
@@ -71,4 +91,22 @@ def _flatten_purdy_times():
 
 @pytest.fixture(params=_flatten_purdy_times())
 def purdy_time(request):
+    yield request.param
+
+
+def _flatten_VO2Max_times():
+    VO2Max_times = []
+    for performance in PERFORMANCES:
+        for VO2Max_time in performance['VO2Max_times']:
+            VO2Max_times.append({
+                'distance': performance['distance'],
+                'time': performance['time'],
+                'predicted_distance': VO2Max_time[0],
+                'predicted_time': VO2Max_time[1],
+            })
+    return VO2Max_times
+
+
+@pytest.fixture(params=_flatten_VO2Max_times())
+def VO2Max_time(request):
     yield request.param
