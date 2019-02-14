@@ -1,0 +1,26 @@
+language: python
+python:
+  - '3.6'
+
+env:
+  global:
+    - PIPENV_VENV_IN_PROJECT=1
+    - PIPENV_IGNORE_VIRTUALENVS=1
+    - secure: "glUt8Smxwh4HoNMJmOhyCoC5PKU0Dd41DPPn54ClqqIhrFO3bGqanhpqSxVpB/FWQXh6tynvxmwNO6XplfrqSNB6mhLOeN8hRkJmTnu97p6Sue+bNu5fV+vU8x9VDurz625qnQkgpe3hee3BT7eN8VS4LX1ueVO1xKCO1/n68f4cSfruw2nsiReX1igjmTfUAnlv/fcOxCYhoJCfnloZDoyHbOLJCGTYRdVmEstMH/i0wefKG/T9SDb9SPZ19Pc/rA/FkRTEVBmQK+YqWOgWaxCrYnbOny3+A0Se8X1UmowwLFwPdWt0fcU5hjbNgi8T9fa0wSINmZCfJaf7d/MiJkM1sxfP7p2Pa9ISlsLucacuAlkrEGOf+bw8eYzzmiOicLksPsQGFVhK58pXUxI1HBGPJyk2dK7KglrKG8xa3jH1DdGWHYAsHY2Yowo8H4lOB5MNO/5aGYqW22FfjmxHSyjWofCcKKuAgfg9hJcKyC49FJP6+hXj35sKnuZ8sf2LKd7x+d+cakJWkhiY5ueUNJzfAs0bNXy53OZMsmOY/6JwJ+g71iNppm0Top3qLLWJhLSgTYjUfBIiwl4ebTexJLMYLLfBko7sPPZ/0PJlb5uE8sArLpudlvfZCbSxMGBy4e/z4VDsz+i4Fc6BD3huaO9c83+D7RGOH3eXUk1WYoc="
+    - secure: jKr1RdHraYIcw3VUnrlfRLAJ7Q9M1RyyZaxCDg5oSijruzqxmvcaF1LqJHINHBIt3SV/gx+3LYiHYFH3zLYR5BYQt3MR4NYiq4JRud19EV5ejQ0bEN2uc2ia5CGPEz/E/spa1JVQy8ua4Oe49EK/V8DzvSWR4JGdvwBFJvy3mqfTRxuz2thg88ZgZi/cwo/FKi9a/b36V7cY72gm032baPjgjoqVuJ8vplkIOHgLjnM3nXmuWk8JFDp6BeqyBDv1bkOA2NSqTAO8GdiHhTibUyDou3kkZKm9yyr/C6uJiu+KEz3yPNbOvva0G8E09DPt/sTFwHOEjRk5aDUsUZXoPtPMXgLEfB/qktCZYdutXCtkeunqO2VXZx35pLmCtK0+6tlsl7mtiDE8PNNweFWessYYchyAMQQ6c3+8xClDLnQ8DTR5EaCUOWAUGLzLdOIESieUhQ1MICD5sXXZ/Q97XPBDCtf099XgGn4+J3FiVZ06voIU7kWbiMZ2rup7CHj+XK5H7tteJY3ISnHXXONLJSyD9ZQb2XiUofh79sOvpmNVMMfTenkYCemN86FvA+9YkygBjnfIChEpbj1uuyDaazKCAMSmRGzcNvUCF95V0vXheq2yQBAEMpzGPCCjt3Tlr1Eu47Mvj9aUh8j6RVkOGBE7LN0aOicvybOVS6CEu3c=
+
+install:
+  - pip install pipenv
+  - pipenv install --dev --three
+
+script:
+  - pipenv run -- make lint test
+
+deploy:
+  - on:
+      tags: true
+      condition: -z $(git branch --points-at $TRAVIS_COMMIT master)
+    skip_cleanup: true
+    provider: script
+    script:
+      - pipenv run -- make upload
