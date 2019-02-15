@@ -24,6 +24,11 @@ PERFORMANCES = [
             (10000, 50 * 60 + 29),
             (21100, 1 * 60**2 + 51 * 60 + 18),
         ),
+        'riegel_times': (
+            (5000, 24 * 60 + 14),
+            (10000, 50 * 60 + 32),
+            (21100, 1 * 60**2 + 51 * 60 + 29),
+        ),
     },
     {
         'distance': 10000,
@@ -44,6 +49,11 @@ PERFORMANCES = [
             (5000, 25 * 60 + 8),
             (10000, 52 * 60 + 22),
             (21100, 1 * 60**2 + 55 * 60 + 27),
+        ),
+        'riegel_times': (
+            (5000, 25 * 60 + 7),
+            (10000, 52 * 60 + 22),
+            (21100, 1 * 60**2 + 55 * 60 + 33),
         ),
     },
     {
@@ -66,6 +76,11 @@ PERFORMANCES = [
             (10000, 54 * 60 + 42),
             (21100, 2 * 60**2 + 37),
         ),
+        'riegel_times': (
+            (5000, 26 * 60 + 13),
+            (10000, 54 * 60 + 40),
+            (21100, 2 * 60**2 + 37),
+        ),
     },
     {
         'distance': 2010,
@@ -86,6 +101,11 @@ PERFORMANCES = [
             (5000, 26 * 60 + 22),
             (10000, 54 * 60 + 55),
             (21100, 2 * 60**2 + 1 * 60 + 5),
+        ),
+        'riegel_times': (
+            (5000, 25 * 60 + 48),
+            (10000, 53 * 60 + 47),
+            (21100, 1 * 60**2 + 58 * 60 + 39),
         ),
     },
 ]
@@ -121,4 +141,9 @@ def VO2Max_time(request):
 
 @pytest.fixture(params=_flatten_times('cameron'))
 def cameron_time(request):
+    yield request.param
+
+
+@pytest.fixture(params=_flatten_times('riegel'))
+def riegel_time(request):
     yield request.param
