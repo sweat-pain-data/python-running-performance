@@ -19,6 +19,11 @@ PERFORMANCES = [
             (10000, 50 * 60 + 17),
             (21100, 1 * 60**2 + 51 * 60 + 30),
         ),
+        'cameron_times': (
+            (5000, 24 * 60 + 14),
+            (10000, 50 * 60 + 29),
+            (21100, 1 * 60**2 + 51 * 60 + 18),
+        ),
     },
     {
         'distance': 10000,
@@ -34,6 +39,11 @@ PERFORMANCES = [
             (5000, 25 * 60 + 14),
             (10000, 52 * 60 + 22),
             (21100, 1 * 60**2 + 56 * 60 + 7),
+        ),
+        'cameron_times': (
+            (5000, 25 * 60 + 8),
+            (10000, 52 * 60 + 22),
+            (21100, 1 * 60**2 + 55 * 60 + 27),
         ),
     },
     {
@@ -51,6 +61,11 @@ PERFORMANCES = [
             (10000, 54 * 60 + 24),
             (21100, 2 * 60**2 + 37),
         ),
+        'cameron_times': (
+            (5000, 26 * 60 + 15),
+            (10000, 54 * 60 + 42),
+            (21100, 2 * 60**2 + 37),
+        ),
     },
     {
         'distance': 2010,
@@ -66,6 +81,11 @@ PERFORMANCES = [
             (5000, 25 * 60 + 57),
             (10000, 53 * 60 + 54),
             (21100, 1 * 60**2 + 59 * 60 + 30),
+        ),
+        'cameron_times': (
+            (5000, 26 * 60 + 22),
+            (10000, 54 * 60 + 55),
+            (21100, 2 * 60**2 + 1 * 60 + 5),
         ),
     },
 ]
@@ -96,4 +116,9 @@ def purdy_time(request):
 
 @pytest.fixture(params=_flatten_times('VO2Max'))
 def VO2Max_time(request):
+    yield request.param
+
+
+@pytest.fixture(params=_flatten_times('cameron'))
+def cameron_time(request):
     yield request.param
