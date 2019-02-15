@@ -76,37 +76,24 @@ def performance(request):
     yield request.param
 
 
-def _flatten_purdy_times():
-    purdy_times = []
+def _flatten_times(key):
+    times = []
     for performance in PERFORMANCES:
-        for purdy_time in performance['purdy_times']:
-            purdy_times.append({
+        for time in performance['{}_times'.format(key)]:
+            times.append({
                 'distance': performance['distance'],
                 'time': performance['time'],
-                'predicted_distance': purdy_time[0],
-                'predicted_time': purdy_time[1],
+                'predicted_distance': time[0],
+                'predicted_time': time[1],
             })
-    return purdy_times
+    return times
 
 
-@pytest.fixture(params=_flatten_purdy_times())
+@pytest.fixture(params=_flatten_times('purdy'))
 def purdy_time(request):
     yield request.param
 
 
-def _flatten_VO2Max_times():
-    VO2Max_times = []
-    for performance in PERFORMANCES:
-        for VO2Max_time in performance['VO2Max_times']:
-            VO2Max_times.append({
-                'distance': performance['distance'],
-                'time': performance['time'],
-                'predicted_distance': VO2Max_time[0],
-                'predicted_time': VO2Max_time[1],
-            })
-    return VO2Max_times
-
-
-@pytest.fixture(params=_flatten_VO2Max_times())
+@pytest.fixture(params=_flatten_times('VO2Max'))
 def VO2Max_time(request):
     yield request.param
