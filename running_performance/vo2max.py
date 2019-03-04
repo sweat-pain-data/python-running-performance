@@ -53,7 +53,7 @@ def VO2Max_prediction(distance, time, distance_to_predict):
     predicted_time = time * distance_to_predict / distance
 
     while True:
-        VO2Max_predicted = VO2Max(distance_to_predict, predicted_time)
+        VO2Max_predicted = VO2Max(distance_to_predict, predicted_time, None)
         difference = fabs(VO2Max_predicted - VO2Max_achieved) / VO2Max_achieved
         if difference <= epsilon:
             break
